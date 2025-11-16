@@ -17,7 +17,7 @@ const projects = [
   {
     title: "Spectra GeoSolutions website",
     description: "A website for seectra-geosolutions",
-    image: "images/spectraGeosolutions.jpg",
+    image: "public/images/spectraGeosolutions.jpg",
     url: "https://spectrageosolutions.com",
     tags: ["PHP", "Jquery", "MySQL", "Linux", "devOps"],
     // scale: 0.96,
@@ -25,7 +25,7 @@ const projects = [
   },  {
     title: "Leave Calculator",
     description: "A website that tells you number of days you can miss/attend classes to be able to sit in the exams, i.e. 75%",
-    image: "images/attcalc.svg",
+    image: "public/images/attcalc.svg",
     url:"https://chandranshb.github.io/attendanceTracker/",
     tags: ["HTML", "JavaScript", "CSS", "React"],
     color: "from-green-500 to-green-500",
