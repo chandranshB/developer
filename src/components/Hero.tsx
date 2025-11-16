@@ -15,7 +15,7 @@ export function Hero() {
           </h1>
           
           <p className="text-[21px] md:text-[24px] text-muted-foreground max-w-[700px] mx-auto leading-[1.4] tracking-tight">
-            Crafting beautiful digital experiences that combine thoughtful design with powerful technology.
+            Crafting beautiful digital experiences that combine thoughtful design with efficiency & powerful technology.
           </p>
         </div>
 

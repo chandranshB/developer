@@ -28,7 +28,7 @@ export function About() {
           <div className="order-1 lg:order-2">
             <div className="relative rounded-[28px] overflow-hidden aspect-[4/5] shadow-xl">
               <ImageWithFallback
-                src="../images/shanDran.webp"
+                src="images/shanDran.webp"
                 alt="Workspace"
                 className="w-full h-full object-cover"
               />

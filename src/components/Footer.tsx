@@ -7,26 +7,28 @@ export function Footer() {
         <div className="flex flex-col items-center gap-8">
           <div className="flex items-center gap-6">
             <a 
-              href="#" 
+              href="https://github.com/chandranshB"
+              target="_blank" 
               className="w-10 h-10 rounded-full bg-muted flex items-center justify-center hover:bg-primary/10 transition-colors"
               aria-label="GitHub"
             >
               <Github className="w-5 h-5" />
             </a>
             <a 
-              href="#" 
+              href="https://www.linkedin.com/in/chandranshbinjola/" 
+              target="_blank"
               className="w-10 h-10 rounded-full bg-muted flex items-center justify-center hover:bg-primary/10 transition-colors"
               aria-label="LinkedIn"
             >
               <Linkedin className="w-5 h-5" />
             </a>
-            <a 
+            {/* <a 
               href="#" 
               className="w-10 h-10 rounded-full bg-muted flex items-center justify-center hover:bg-primary/10 transition-colors"
               aria-label="Twitter"
             >
               <Twitter className="w-5 h-5" />
-            </a>
+            </a> */}
           </div>
           
           <div className="text-center">
