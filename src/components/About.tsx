@@ -1,4 +1,4 @@
-import { ImageWithFallback } from "./figma/ImageWithFallback";
+import { Parallax3DCard } from "./Parallax3DCard";
 
 export function About() {
   return (
@@ -26,14 +26,9 @@ export function About() {
           </div>
 
           <div className="order-1 lg:order-2">
-            <div className="relative rounded-[28px] overflow-hidden aspect-[4/5] shadow-xl">
-              <ImageWithFallback
-                src="images/shanDran.webp"
-                alt="Workspace"
-                className="w-full h-full object-cover"
-              />
-            </div>
+            <Parallax3DCard />
           </div>
+
         </div>
       </div>
     </section>

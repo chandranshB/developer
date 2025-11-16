@@ -18,7 +18,11 @@ export function Header() {
   ];
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 glass border-b border-black/5">
+    <header className="fixed top-0 left-0 right-0 z-50 border-b border-black/5" style={{
+      background: 'rgba(255, 255, 255, 0.7)',
+      backdropFilter: 'saturate(180%) blur(20px)',
+      WebkitBackdropFilter: 'saturate(180%) blur(20px)',
+    }}>
       <nav className="max-w-[980px] mx-auto px-5 py-4 md:px-8">
         <div className="flex items-center justify-between">
           <button
