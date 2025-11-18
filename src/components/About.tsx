@@ -1,8 +1,9 @@
 import { Parallax3DCard } from "./Parallax3DCard";
+import { ImageWithFallback } from "./figma/ImageWithFallback";
 
 export function About() {
   return (
-    <section id="about" className="py-32 px-5 md:px-8 bg-white">
+    <section id="about" className="py-32 px-5 md:px-8 bg-white dark:bg-background">
       <div className="max-w-[980px] mx-auto">
         <div className="grid lg:grid-cols-2 gap-20 items-center">
           <div className="space-y-8 order-2 lg:order-1">

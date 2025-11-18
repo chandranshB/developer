@@ -7,8 +7,14 @@ export function Hero() {
   };
 
   return (
-    <section className="min-h-screen flex items-center justify-center px-5 pt-20 md:px-8">
-      <div className="max-w-[980px] w-full text-center space-y-8 py-20">
+    <section className="relative min-h-screen flex items-center justify-center px-5 md:px-8 pt-20 overflow-hidden">
+      {/* Glassmorphism Background Elements */}
+      <div className="absolute inset-0 overflow-hidden">
+        <div className="absolute top-1/4 -left-20 w-96 h-96 rounded-full bg-gradient-to-br from-blue-500/20 to-purple-500/20 blur-3xl" />
+        <div className="absolute bottom-1/4 -right-20 w-96 h-96 rounded-full bg-gradient-to-br from-cyan-500/20 to-pink-500/20 blur-3xl" />
+      </div>
+      
+      <div className="max-w-[980px] mx-auto text-center relative z-10">
         <div className="space-y-6">
           <h1 className="text-[48px] md:text-[64px] lg:text-[80px] leading-[1.05] tracking-tight">
             Developer.<br />Designer.<br />Creator.

@@ -2,13 +2,13 @@ import { Card } from "./ui/card";
 import { Badge } from "./ui/badge";
 import { ExternalLink } from "lucide-react";
 import { ImageWithFallback } from "./figma/ImageWithFallback";
-import { url } from "inspector";
 
 const projects = [
   {
-    title: "seetaNarayan Travels web app",
+   title: "SeetaNarayan Travels web app",
     description: "A complete dynamic travel booking system with proper booking system and authentication.",
-    image: "https://seetanarayantravels.in/assets/logo-main.png",
+    // image: "https://seetanarayantravels.in/assets/logo-main.png",
+    image: "public/Untitled design.png",
     url: "https://seetanarayantravels.in",
     tags: ["React", "Node.js", "PostgreSQL", "Vite", "PostgreSQL", "ESLint"],
     scale: 0.5,
@@ -35,8 +35,8 @@ const projects = [
 
 export function Projects() {
   return (
-    <section id="projects" className="py-32 px-5 md:px-8">
-      <div className="max-w-[980px] mx-auto">
+    <section id="projects" className="py-32 px-5 md:px-8 bg-white dark:bg-background">
+      <div className="max-w-[1200px] mx-auto">
         <div className="text-center mb-20">
           <p className="text-[14px] text-primary mb-3 tracking-wide uppercase">Portfolio</p>
           <h2 className="text-[40px] md:text-[48px] leading-[1.08] tracking-tight mb-4">
@@ -50,20 +50,14 @@ export function Projects() {
         <div className="space-y-24">
           {projects.map((project, index) => (
             <div key={index} className="group">
-              <Card className="overflow-hidden border-0 shadow-xl bg-white hover:shadow-2xl transition-all duration-500">
+              <Card className="overflow-hidden border-0 shadow-xl glass-card hover:shadow-2xl transition-all duration-500">
                 <div className="grid lg:grid-cols-2 gap-0">
-                  <div className={`relative aspect-[4/3] lg:aspect-auto overflow-hidden ${index % 2 === 1 ? 'lg:order-2' : ''}`}>
-                    {/* wrapper allows independent scaling of the image without clobbering hover transforms on the img itself */}
-                    <div
-                      className="w-full h-full"
-                      style={project.scale ? { transform: `scale(${project.scale})`, transformOrigin: 'center', transition: 'transform 0.7s' } : undefined}
-                    >
-                      <ImageWithFallback
-                        src={project.image}
-                        alt={project.title}
-                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
-                      />
-                    </div>
+                  <div className={`relative aspect-[4/3] overflow-hidden ${index % 2 === 1 ? 'lg:order-2' : ''}`}>
+                    <ImageWithFallback
+                      src={project.image}
+                      alt={project.title}
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+                    />
                     <div className={`absolute inset-0 bg-gradient-to-br ${project.color} opacity-20 mix-blend-multiply`} />
                   </div>
                   
@@ -82,26 +76,10 @@ export function Projects() {
                       ))}
                     </div>
                     <div>
-                      {project.url ? (
-                        <a
-                          href={project.url}
-                          target="_blank"
-                          rel="noreferrer"
-                          className="inline-flex items-center text-[17px] text-primary hover:text-primary/80 transition-colors group/link"
-                        >
-                          View project
-                          <ExternalLink className="w-4 h-4 ml-2 group-hover/link:translate-x-1 transition-transform" />
-                        </a>
-                      ) : (
-                        <button
-                          disabled
-                          className="inline-flex items-center text-[17px] text-muted-foreground opacity-60 cursor-not-allowed"
-                          aria-disabled="true"
-                        >
-                          View project
-                          <ExternalLink className="w-4 h-4 ml-2" />
-                        </button>
-                      )}
+                      <button className="inline-flex items-center text-[17px] text-primary hover:text-primary/80 transition-colors group/link">
+                        View project
+                        <ExternalLink className="w-4 h-4 ml-2 group-hover/link:translate-x-1 transition-transform" />
+                      </button>
                     </div>
                   </div>
                 </div>
