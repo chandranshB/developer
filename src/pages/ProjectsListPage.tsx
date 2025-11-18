@@ -1,6 +1,6 @@
 import { motion } from "motion/react";
 import { Badge } from "../components/ui/badge";
-import { ImageWithFallback } from "../components/figma/ImageWithFallback";
+import { ImageWithFallback } from "../components/imageFallback/ImageWithFallback";
 import { ArrowRight } from "lucide-react";
 import { projectsData } from "../data/projectsData";
 

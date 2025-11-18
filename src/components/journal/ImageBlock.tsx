@@ -1,4 +1,4 @@
-import { ImageWithFallback } from "../figma/ImageWithFallback";
+import { ImageWithFallback } from "../imageFallback/ImageWithFallback";
 
 interface ImageBlockProps {
   src: string;

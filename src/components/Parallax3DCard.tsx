@@ -1,5 +1,5 @@
 import { useEffect, useRef } from 'react';
-import { ImageWithFallback } from './figma/ImageWithFallback';
+import { ImageWithFallback } from './imageFallback/ImageWithFallback';
 
 export function Parallax3DCard() {
   const cardRef = useRef<HTMLDivElement>(null);
@@ -44,7 +44,7 @@ export function Parallax3DCard() {
       const glare = card.querySelector('.parallax-glare') as HTMLElement;
       
       if (foreground) {
-        foreground.style.transform = `translateZ(80px) translate(${mouseX * 0.05}px, ${mouseY * 0.05}px)`;
+        foreground.style.transform = `translateZ(80px) translate(${mouseX * 0.1}px, ${mouseY * 0.08}px)`;
       }
       if (background) {
         background.style.transform = `translateZ(-20px) translate(${mouseX * 0.02}px, ${mouseY * 0.02}px)`;

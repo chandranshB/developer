@@ -1,5 +1,5 @@
 import { Parallax3DCard } from "./Parallax3DCard";
-import { ImageWithFallback } from "./figma/ImageWithFallback";
+import { ImageWithFallback } from "./imageFallback/ImageWithFallback";
 
 export function About() {
   return (
