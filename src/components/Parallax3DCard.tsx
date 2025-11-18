@@ -30,8 +30,8 @@ export function Parallax3DCard() {
 
     const animate = () => {
       if (isHovering) {
-        cardX += (mouseX * 0.02 - cardX) * 0.1;
-        cardY += (mouseY * 0.02 - cardY) * 0.1;
+        cardX += (mouseX * 0.02 - cardX) * 0.2;
+        cardY += (mouseY * 0.02 - cardY) * 0.2;
       } else {
         cardX += (0 - cardX) * 0.1;
         cardY += (0 - cardY) * 0.1;
@@ -44,7 +44,7 @@ export function Parallax3DCard() {
       const glare = card.querySelector('.parallax-glare') as HTMLElement;
       
       if (foreground) {
-        foreground.style.transform = `translateZ(80px) translate(${mouseX * 0.1}px, ${mouseY * 0.08}px)`;
+        foreground.style.transform = `translateZ(80px) translate(${mouseX * 0.06}px, ${mouseY * 0.06}px)`;
       }
       if (background) {
         background.style.transform = `translateZ(-20px) translate(${mouseX * 0.02}px, ${mouseY * 0.02}px)`;
