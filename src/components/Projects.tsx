@@ -8,7 +8,7 @@ const projects = [
    title: "SeetaNarayan Travels web app",
     description: "A complete dynamic travel booking system with proper booking system and authentication.",
     // image: "https://seetanarayantravels.in/assets/logo-main.png",
-    image: "public/Untitled design.png",
+    image: "Untitled design.png",
     url: "https://seetanarayantravels.in",
     tags: ["React", "Node.js", "PostgreSQL", "Vite", "PostgreSQL", "ESLint"],
     scale: 0.5,

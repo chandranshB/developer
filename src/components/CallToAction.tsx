@@ -36,7 +36,7 @@ export function CallToAction() {
               asChild
               className="rounded-full px-8 h-12 text-[17px] border-black/10 dark:border-white/10 hover:bg-muted/50 transition-all"
             >
-              <a href="public/resume.pdf" download="HIRE ME ASAP.pdf">
+              <a href="resume.pdf" download="HIRE ME ASAP.pdf">
                 <Download className="w-4 h-4 mr-2" />
                 Download resume
               </a>

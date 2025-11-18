@@ -1,4 +1,4 @@
-import { motion } from "motion/react";
+import { motion } from "framer-motion";
 import { Lightbulb, Palette, Code, Rocket } from "lucide-react";
 
 const steps = [
