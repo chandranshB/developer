@@ -76,10 +76,15 @@ export function Projects() {
                       ))}
                     </div>
                     <div>
-                      <button className="inline-flex items-center text-[17px] text-primary hover:text-primary/80 transition-colors group/link">
+                      <a 
+                        href={project.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center text-[17px] text-primary hover:text-primary/80 transition-colors group/link"
+                      >
                         View project
                         <ExternalLink className="w-4 h-4 ml-2 group-hover/link:translate-x-1 transition-transform" />
-                      </button>
+                      </a>
                     </div>
                   </div>
                 </div>
