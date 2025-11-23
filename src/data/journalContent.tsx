@@ -310,4 +310,151 @@ const variants: Record<VariantKey, string> = {
       </TextBlock>
     </>
   ),
+  "snt-concurrency-architecture": () => (
+    <>
+      <TextBlock variant="paragraph">
+        In building <strong>SeetaNarayan Travels</strong>, the most critical challenge wasn't visible on the screen—it was in the database. When dealing with real-time travel bookings, the margin for error is zero. A "double booking" (two users booking the same seat simultaneously) isn't just a bug; it's a broken promise to a customer who might be left stranded.
+      </TextBlock>
+
+      <Callout type="info">
+        In distributed systems, <strong>Correctness</strong> often competes with <strong>Performance</strong>. The art of engineering is balancing the two without compromising the user experience.
+      </Callout>
+
+      <TextBlock variant="heading">The Invisible Problem: Race Conditions</TextBlock>
+
+      <TextBlock variant="paragraph">
+        During load testing, we discovered a critical "check-then-act" race condition. Standard validation logic checks if a seat is available and <em>then</em> books it. However, in the milliseconds between the <code>READ</code> and the <code>WRITE</code>, another request could slip in.
+      </TextBlock>
+
+      <TextBlock variant="paragraph">
+        In a high-concurrency environment, this standard approach fails:
+      </TextBlock>
+
+      <CodeBlock
+        filename="unsafe-booking.ts"
+        language="typescript"
+        code={`// ❌ THE NAIVE APPROACH (Vulnerable to Race Conditions)
+async function bookSeat(vehicleId, seatNumber, userId) {
+  // 1. Check availability
+  const isAvailable = await db.checkSeat(vehicleId, seatNumber);
+  
+  if (!isAvailable) {
+    throw new Error('Seat taken');
+  }
+
+  // 🔴 RACE CONDITION WINDOW: Another request can book here!
+
+  // 2. Book the seat
+  return await db.createBooking(vehicleId, seatNumber, userId);
+}`}
+      />
+
+      <TextBlock variant="paragraph">
+        This is a classic concurrency anomaly. With standard PostgreSQL <code>READ COMMITTED</code> isolation, both transactions see the seat as "free" before either commits.
+      </TextBlock>
+
+      <TextBlock variant="heading">The Solution: Pessimistic Locking</TextBlock>
+
+      <TextBlock variant="paragraph">
+        To solve this with absolute certainty, I implemented <strong>Pessimistic Locking</strong> using PostgreSQL's <code>SELECT ... FOR UPDATE</code>. This forces the database to lock the specific row (inventory item) for the duration of the transaction, effectively serializing access to that specific seat without locking the entire table.
+      </TextBlock>
+
+      <CodeBlock
+        filename="transaction-manager.ts"
+        language="typescript"
+        code={`// ✅ THE ROBUST APPROACH
+async function bookSeatSecurely(vehicleId, seatNumber, userId) {
+  return await db.transaction(async (trx) => {
+    // 1. Lock the specific row for this transaction
+    // "FOR UPDATE" prevents other transactions from modifying this row
+    const seat = await trx('inventory')
+      .where({ vehicle_id: vehicleId, seat_number: seatNumber })
+      .forUpdate() // 🔒 The Magic Line
+      .first();
+
+    if (seat.status !== 'AVAILABLE') {
+      throw new Error('Seat unavailable');
+    }
+
+    // 2. Process Booking
+    const booking = await trx('bookings').insert({
+      vehicle_id: vehicleId,
+      seat_number: seatNumber,
+      user_id: userId,
+      status: 'CONFIRMED'
+    });
+
+    // 3. Update Inventory
+    await trx('inventory')
+      .where({ id: seat.id })
+      .update({ status: 'BOOKED' });
+
+    return booking;
+  });
+}`}
+      />
+
+      <Callout type="success">
+        By utilizing database-level row locking, we guaranteed <strong>ACID compliance</strong> for every booking. Zero double bookings, regardless of traffic spikes.
+      </Callout>
+
+      <TextBlock variant="heading">Optimizing the User Experience</TextBlock>
+
+      <TextBlock variant="paragraph">
+        Solving the backend problem created a frontend challenge: latency. Locking rows introduces wait times. To mask this, I implemented an <strong>Optimistic UI</strong> pattern handling specifically for the <code>409 Conflict</code> status code.
+      </TextBlock>
+
+      <ImageBlock
+        src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=1000&auto=format&fit=crop"
+        alt="Server Architecture Diagram"
+        caption="Balancing strong consistency on the backend with eventual consistency on the frontend."
+        size="full"
+      />
+
+      <TextBlock variant="paragraph">
+        If a lock contention occurs or a booking fails due to a race condition (which is now caught safely), the UI needs to handle it gracefully without crashing or confusing the user.
+      </TextBlock>
+
+      <CodeBlock
+        filename="useBooking.ts"
+        language="typescript"
+        code={`// Handling the edge case gracefully in the UI
+const handleBooking = async (seatId: string) => {
+  // 1. Optimistic Update: Visually reserve immediately
+  setSeatStatus(seatId, 'RESERVED');
+
+  try {
+    await api.bookSeat(seatId);
+    toast.success('Booking Confirmed!');
+  } catch (error) {
+    // 2. Rollback on failure
+    setSeatStatus(seatId, 'AVAILABLE');
+    
+    // 3. Specific handling for concurrency conflicts
+    if (error.status === 409) {
+      toast.error('Someone just snatched this seat! Please choose another.');
+      // Automatically refresh inventory to show latest state
+      refreshInventory(); 
+    } else {
+      toast.error('Booking failed. Please try again.');
+    }
+  }
+};`}
+      />
+
+      <Divider />
+
+      <TextBlock variant="heading">Key Takeaways</TextBlock>
+
+      <TextBlock variant="list">
+        <ListItem><strong>Data Integrity is Paramount:</strong> In e-commerce/booking, "mostly correct" is not enough.</ListItem>
+        <ListItem><strong>Know Your Database:</strong> Understanding transaction isolation levels (Read Committed vs. Serializable) is a senior-level skill.</ListItem>
+        <ListItem><strong>Fail Gracefully:</strong> A race condition isn't a system crash; it's a business logic state that needs a specific UI response.</ListItem>
+      </TextBlock>
+
+      <TextBlock variant="quote">
+        "True optimization isn't just making things faster; it's making them robust enough to handle the chaos of the real world."
+      </TextBlock>
+    </>
+  ),
 };

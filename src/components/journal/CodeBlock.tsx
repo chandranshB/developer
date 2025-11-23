@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { Check, Copy } from "lucide-react";
 import { Button } from "../ui/button";
+import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
+import { vscDarkPlus } from "react-syntax-highlighter/dist/esm/styles/prism";
 
 interface CodeBlockProps {
   code: string;
@@ -25,15 +27,30 @@ export function CodeBlock({ code, language = "typescript", filename }: CodeBlock
           <span className="text-[11px] text-white/40 uppercase tracking-wide">{language}</span>
         </div>
       )}
-      <div className="relative">
-        <pre className="p-6 overflow-x-auto text-[15px] leading-[1.6]">
-          <code className="text-white/90 font-mono">{code}</code>
-        </pre>
+      <div className="relative group">
+        <SyntaxHighlighter
+          language={language}
+          style={vscDarkPlus}
+          customStyle={{
+            margin: 0,
+            padding: "1.5rem",
+            background: "transparent",
+            fontSize: "15px",
+            lineHeight: "1.6",
+          }}
+          codeTagProps={{
+            style: {
+              fontFamily: "monospace",
+            },
+          }}
+        >
+          {code}
+        </SyntaxHighlighter>
         <Button
           variant="ghost"
           size="icon"
           onClick={copyToClipboard}
-          className="absolute top-4 right-4 rounded-lg bg-white/10 hover:bg-white/20 text-white"
+          className="absolute top-4 right-4 rounded-lg bg-white/10 hover:bg-white/20 text-white opacity-0 group-hover:opacity-100 transition-opacity"
         >
           {copied ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
         </Button>

@@ -11,15 +11,15 @@ export interface ProjectData {
 
 export const projectsData: ProjectData[] = [
   {
-    id: "SNT",
-    title: "SeetaNarayan Travels",
-    subtitle: "A complete shopping experience with seamless checkout",
-    thumbnail: "https://images.unsplash.com/photo-1750056393331-82e69d28c9d9?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHx3ZWIlMjBkZXNpZ24lMjBtb2NrdXB8ZW58MXx8fHwxNzYzMjA2OTA2fDA&ixlib=rb-4.1.0&q=80&w=1080",
-    tags: ["React", "Node.js", "PostgreSQL"],
-    year: "2024",
-    duration: "4 months",
-    role: "Full-stack Developer",
-  },
+  id: "SNT",
+  title: "SeetaNarayan Travels",
+  subtitle: "High-performance travel platform featuring optimistic UI patterns and custom caching layers",
+  thumbnail: "https://images.unsplash.com/photo-1750056393331-82e69d28c9d9?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHx3ZWIlMjBkZXNpZ24lMjBtb2NrdXB8ZW58MXx8fHwxNzYzMjA2OTA2fDA&ixlib=rb-4.1.0&q=80&w=1080",
+  tags: ["Advanced Caching", "React Architecture", "Supabase"],
+  year: "2024",
+  duration: "4 months",
+  role: "Lead Engineer",
+},
   // {
   //   id: "task-management",
   //   title: "Task Management",
