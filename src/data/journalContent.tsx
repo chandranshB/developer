@@ -3,313 +3,197 @@ import { ImageBlock } from "../components/journal/ImageBlock";
 import { TextBlock, ListItem } from "../components/journal/TextBlock";
 import { Callout } from "../components/journal/Callout";
 import { Divider } from "../components/journal/Divider";
+import { StatsGrid } from "../components/journal/StatsGrid";
+import { TwoColumn } from "../components/journal/TwoColumn";
+import { Accordion } from "../components/journal/Accordion";
+import { Alert } from "../components/journal/Alert";
+import { Comparison } from "../components/journal/Comparison";
+import { FeatureCardGrid } from "../components/journal/FeatureCard";
 import { JSX } from "react";
+import { Zap, Layout, Fingerprint, Server } from "lucide-react";
 
 // Each journal entry has its own unique content
 export const journalContent: Record<string, () => JSX.Element> = {
-  "solving-state-management": () => (
+  "spectra-form-rescue": () => (
     <>
       <TextBlock variant="paragraph">
-        Recently, I encountered a challenging issue while working on a large-scale React application. The state management was becoming increasingly complex, and I needed to find a better solution that could scale with our growing codebase.
+        When I took over the project, Spectra Geosolutions was facing a P0 crisis. Their primary lead generation channel wasn't just offline—it was leaking backend logic to the public. Instead of a quick patch, I saw an opportunity to re-engineer their entire communication architecture into something bulletproof.
       </TextBlock>
 
-      <Callout type="warning">
-        When your component tree gets deep and state updates become unpredictable, it's time to rethink your architecture.
-      </Callout>
+      <StatsGrid
+        columns={3}
+        stats={[
+          { value: "100%", label: "Uptime", description: "Dual-Failover Architecture" },
+          { value: "0", label: "Spam Bots", description: "7-Layer Security Grid" },
+          { value: "<2s", label: "Load Time", description: "Optimized Asset Delivery" },
+        ]}
+      />
 
-      <TextBlock variant="heading">The Problem</TextBlock>
+      <TextBlock variant="heading">The Incident: Raw Code on Production</TextBlock>
 
-      <TextBlock variant="paragraph">
-        Our application had multiple features that needed to share state across distant components. Props drilling was becoming a nightmare, and useContext wasn't performing well with frequent updates.
-      </TextBlock>
+      <TwoColumn
+        variant="left-heavy"
+        left={
+          <TextBlock variant="paragraph">
+            The original system was fragile—a single syntax error in the PHP backend crashed the entire frontend render.
+            <br /><br />
+            This screenshot shows exactly what potential clients saw: <strong>raw, truncated server code</strong> instead of a contact form. This wasn't just a UI bug; it was a complete architectural failure.
+          </TextBlock>
+        }
+        right={
+          <Alert variant="error" title="Root Cause">
+            Tightly coupled View/Controller logic meant that backend errors leaked directly into the browser, exposing internal logic.
+          </Alert>
+        }
+      />
 
-      <TextBlock variant="list">
-        <ListItem>Component re-renders were happening too frequently</ListItem>
-        <ListItem>State updates were difficult to track and debug</ListItem>
-        <ListItem>The codebase was becoming hard to maintain</ListItem>
-        <ListItem>Team members were confused about where to put new state</ListItem>
-      </TextBlock>
-
+      {/* THE "BEFORE" IMAGE - The broken state */}
       <ImageBlock
-        src="https://images.unsplash.com/photo-1633356122544-f134324a6cee?w=800"
-        alt="Code on screen"
-        caption="Analyzing the component tree helped identify performance bottlenecks"
+        src="images/journal/spectra[nov-2025].webp"
+        alt="Screenshot of the broken website displaying raw code"
+        caption="The Incident: A snapshot of the live production site displaying raw PHP code due to a server misconfiguration."
         size="full"
       />
 
-      <TextBlock variant="heading">The Solution</TextBlock>
+      <TextBlock variant="heading">From "Broken" to "Bulletproof"</TextBlock>
 
-      <TextBlock variant="paragraph">
-        After researching different approaches including Redux, Zustand, and Jotai, I implemented a custom hook pattern combined with Zustand for global state. Here's the pattern I discovered:
-      </TextBlock>
-
-      <CodeBlock
-        filename="useOptimizedState.ts"
-        language="typescript"
-        code={`import { useCallback, useRef, useState } from 'react';
-
-export function useOptimizedState<T>(initialValue: T) {
-  const [state, setState] = useState(initialValue);
-  const stateRef = useRef(state);
-
-  const setOptimizedState = useCallback((value: T | ((prev: T) => T)) => {
-    setState((prev) => {
-      const newValue = value instanceof Function ? value(prev) : value;
-      stateRef.current = newValue;
-      return newValue;
-    });
-  }, []);
-
-  return [state, setOptimizedState, stateRef] as const;
-}`}
+      <Comparison
+        before={{
+          title: "Legacy Mess",
+          items: [
+            "Leaked raw PHP code on error",
+            "Zero validation (Client or Server)",
+            "Silent failure if SMTP dropped",
+            "Inaccessible to screen readers"
+          ]
+        }}
+        after={{
+          title: "My Architecture",
+          items: [
+            "Decoupled View/Controller Pattern",
+            "Real-time feedback engine",
+            "Self-healing Email Delivery",
+            "WCAG 2.1 AA Compliant"
+          ]
+        }}
       />
 
-      <TextBlock variant="paragraph">
-        This hook provides both the state value and a ref, allowing us to access the latest value without causing unnecessary re-renders in event handlers and async functions.
-      </TextBlock>
+      <TextBlock variant="heading">The "Invisible" Security Fortress</TextBlock>
 
-      <Callout type="success">
-        After implementing this pattern alongside Zustand for global state, we saw a 40% reduction in unnecessary re-renders and a significant improvement in application performance.
-      </Callout>
-
-      <Divider />
-
-      <TextBlock variant="heading">Key Takeaways</TextBlock>
-
-      <TextBlock variant="list">
-        <ListItem>Always measure performance before and after optimization</ListItem>
-        <ListItem>Understanding React's rendering behavior is crucial for large apps</ListItem>
-        <ListItem>Custom hooks can encapsulate complex logic effectively</ListItem>
-        <ListItem>Choose the right tool for the job - not every app needs Redux</ListItem>
-        <ListItem>Documentation and code comments are essential for team collaboration</ListItem>
-      </TextBlock>
-
-      <TextBlock variant="quote">
-        "The best code is not the cleverest code, but the code that is easiest to understand and maintain."
-      </TextBlock>
-    </>
-  ),
-
-  "performance-optimization": () => (
-    <>
-      <TextBlock variant="paragraph">
-        Performance optimization is one of those topics that sounds scary but can have massive impact. Let me share how I reduced load time by 60% in a production app.
-      </TextBlock>
-
-      <TextBlock variant="heading">Where I Started</TextBlock>
-
-      <TextBlock variant="paragraph">
-        The app was slow. Users were complaining, and our analytics showed high bounce rates on the landing page. Time to investigate.
-      </TextBlock>
-
-      <Callout type="info">
-        Always start with measurement. Use Chrome DevTools, Lighthouse, and Web Vitals to identify actual bottlenecks before optimizing.
-      </Callout>
-
-      <TextBlock variant="subheading">Initial Metrics</TextBlock>
-
-      <TextBlock variant="list">
-        <ListItem>First Contentful Paint: 3.2s</ListItem>
-        <ListItem>Largest Contentful Paint: 5.8s</ListItem>
-        <ListItem>Time to Interactive: 7.1s</ListItem>
-        <ListItem>Bundle size: 850KB gzipped</ListItem>
-      </TextBlock>
-
-      <TextBlock variant="heading">Optimization Strategies</TextBlock>
-
-      <TextBlock variant="subheading">1. Code Splitting</TextBlock>
-
-      <CodeBlock
-        filename="App.tsx"
-        language="typescript"
-        code={`import { lazy, Suspense } from 'react';
-
-// Instead of importing everything at once
-// import Dashboard from './pages/Dashboard';
-// import Settings from './pages/Settings';
-
-// Lazy load route components
-const Dashboard = lazy(() => import('./pages/Dashboard'));
-const Settings = lazy(() => import('./pages/Settings'));
-
-function App() {
-  return (
-    <Suspense fallback={<LoadingSpinner />}>
-      <Routes>
-        <Route path="/dashboard" element={<Dashboard />} />
-        <Route path="/settings" element={<Settings />} />
-      </Routes>
-    </Suspense>
-  );
-}`}
+      <TwoColumn
+        variant="left-heavy"
+        left={
+          <TextBlock variant="paragraph">
+            Public forms are the #1 target for bots. Most developers slap on a CAPTCHA and call it a day, but that hurts the user experience.
+            <br /><br />
+            I took a different approach: <strong>Defense in Depth</strong>. I implemented a 7-layer security grid that validates requests invisibly, blocking malicious actors without a single "Click all the traffic lights" puzzle.
+          </TextBlock>
+        }
+        right={
+          <Alert variant="primary" title="Philosophy">
+            "Security should be a feature of the architecture itself."
+          </Alert>
+        }
       />
 
-      <TextBlock variant="subheading">2. Image Optimization</TextBlock>
+      <Accordion
+        items={[
+          {
+            title: "Layer 1: Client-Side Behavior Analysis",
+            content: "We don't just check inputs; we check behavior. Real-time validation ensures data integrity before a request is ever sent, reducing server load by catching errors at the source."
+          },
+          {
+            title: "Layer 2: Transport & Session Security",
+            content: "Enforced strict HTTPS, Secure Cookie flags (HTTPOnly, SameSite), and HSTS headers to prevent Man-in-the-Middle attacks during data transmission."
+          },
+          {
+            title: "Layer 3: Cryptographic CSRF Protection",
+            content: "Every form render generates a unique cryptographic token. If the submitted token doesn't match the session state, the request is instantly dropped—neutralizing Cross-Site Request Forgery."
+          },
+          {
+            title: "Layer 4: Input Sanitization & Normalization",
+            content: "All incoming data is stripped of HTML tags, trimmed, and filtered through strict type-checking to prevent XSS (Cross-Site Scripting) injections and SQL exploits."
+          },
+          {
+            title: "Layer 5: The 'Honeypot' Trap",
+            content: "I injected invisible input fields that are hidden from humans but visible to bots. If a bot greedily fills these out, the system silently flags and rejects the submission."
+          },
+          {
+            title: "Layer 6: Session-Based Rate Limiting",
+            content: "To prevent brute-force attacks, I implemented a session-level throttle. Users are limited to 3 submissions per 30-minute window, stopping spam bursts cold."
+          },
+          {
+            title: "Layer 7: Timing Heuristics",
+            content: "Bots are fast—too fast. I added a timestamp check. If a form is submitted in under 2 seconds (superhuman speed), we know it's a script and block it."
+          }
+        ]}
+      />
 
-      <TextBlock variant="paragraph">
-        Images were the biggest culprit. I implemented next/image for automatic optimization and WebP format support.
-      </TextBlock>
+      <TextBlock variant="heading">Engineering for Resilience</TextBlock>
 
+      {/* THE "AFTER" IMAGE - The fixed state */}
       <ImageBlock
-        src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800"
-        alt="Performance metrics"
-        caption="Before and after comparison of Web Vitals scores"
+        src="images/journal/spectra-fix[nov-2025].webp"
+        alt="The restored Spectra Geosolutions interface"
+        caption="The Solution: A polished, high-performance interface that hides a massive amount of backend engineering complexity."
         size="full"
       />
 
-      <TextBlock variant="subheading">3. Lazy Loading Components</TextBlock>
+      <TextBlock variant="paragraph">
+        Reliability was the final piece of the puzzle. I refused to let a lead vanish just because Gmail's SMTP API blinked. I built a <strong>Dual-Failover System</strong> that guarantees delivery.
+      </TextBlock>
 
       <CodeBlock
-        filename="LazyComponent.tsx"
-        language="typescript"
-        code={`import { useEffect, useRef, useState } from 'react';
+        filename="MailHandler.php"
+        language="php"
+        code={`try {
+    // Priority 1: Authenticated SMTP (Rich HTML, Trackable)
+    $mailer->sendViaSMTP($cleanData);
+    logSuccess("SMTP Delivery");
 
-function useInView() {
-  const ref = useRef<HTMLDivElement>(null);
-  const [isInView, setIsInView] = useState(false);
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => setIsInView(entry.isIntersecting),
-      { rootMargin: '100px' }
-    );
-
-    if (ref.current) observer.observe(ref.current);
-    return () => observer.disconnect();
-  }, []);
-
-  return { ref, isInView };
-}
-
-export function HeavyComponent() {
-  const { ref, isInView } = useInView();
-
-  return (
-    <div ref={ref}>
-      {isInView ? <ActualHeavyContent /> : <Skeleton />}
-    </div>
-  );
+} catch (SMTPException $e) {
+    // Priority 2: Native Failover
+    // If the sophisticated method fails, the rugged method takes over.
+    // The business GETS the lead. No excuses.
+    mail($to, $subject, $body);
+    logWarning("Fallback triggered: " . $e->getMessage());
 }`}
       />
 
-      <Callout type="success">
-        Final Results: FCP 1.2s, LCP 2.1s, TTI 2.8s, Bundle 320KB. User engagement increased by 45%.
-      </Callout>
+      <FeatureCardGrid
+        columns={2}
+        features={[
+          {
+            icon: Layout,
+            title: "Seamless Design",
+            description: "Reverse-engineered existing CSS variables to ensure the new component felt completely native."
+          },
+          {
+            icon: Server,
+            title: "Smart Logging",
+            description: "Comprehensive error logging that categorizes issues (User vs. System) for faster debugging."
+          },
+          {
+            icon: Fingerprint,
+            title: "Data Integrity",
+            description: "Preserves user input in the session during validation errors so they never have to re-type."
+          },
+          {
+            icon: Zap,
+            title: "Zero Latency",
+            description: "Implemented asynchronous processing patterns to keep the UI responsive during heavy validation."
+          }
+        ]}
+      />
 
       <Divider />
 
       <TextBlock variant="quote">
-        "Performance is not just about speed - it's about user experience and business outcomes."
+        "True engineering isn't about using the most complex tools. It's about building systems so robust that the complexity becomes invisible to the user."
       </TextBlock>
     </>
   ),
 
-  "typescript-patterns": () => (
-    <>
-      <TextBlock variant="paragraph">
-        TypeScript has transformed how I write JavaScript. Here are the advanced patterns that have made the biggest difference in my code quality.
-      </TextBlock>
-
-      <TextBlock variant="heading">Pattern 1: Discriminated Unions</TextBlock>
-
-      <TextBlock variant="paragraph">
-        This pattern helps create type-safe state machines and API responses.
-      </TextBlock>
-
-      <CodeBlock
-        filename="types.ts"
-        language="typescript"
-        code={`type LoadingState = {
-  status: 'loading';
-  data: null;
-  error: null;
-};
-
-type SuccessState<T> = {
-  status: 'success';
-  data: T;
-  error: null;
-};
-
-type ErrorState = {
-  status: 'error';
-  data: null;
-  error: Error;
-};
-
-type AsyncState<T> = LoadingState | SuccessState<T> | ErrorState;
-
-function handleState<T>(state: AsyncState<T>) {
-  switch (state.status) {
-    case 'loading':
-      return <Spinner />;
-    case 'success':
-      // TypeScript knows data is T here!
-      return <Display data={state.data} />;
-    case 'error':
-      // TypeScript knows error exists here!
-      return <Error message={state.error.message} />;
-  }
-}`}
-      />
-
-      <Callout type="info">
-        Discriminated unions eliminate runtime errors by making invalid states unrepresentable.
-      </Callout>
-
-      <TextBlock variant="heading">Pattern 2: Generic Constraints</TextBlock>
-
-      <CodeBlock
-        filename="generics.ts"
-        language="typescript"
-        code={`interface WithId {
-  id: string;
-}
-
-function findById<T extends WithId>(items: T[], id: string): T | undefined {
-  return items.find(item => item.id === id);
-}
-
-// Works with any type that has an id
-const user = findById(users, '123');
-const post = findById(posts, '456');`}
-      />
-
-      <TextBlock variant="heading">Pattern 3: Template Literal Types</TextBlock>
-
-      <CodeBlock
-        filename="template-literals.ts"
-        language="typescript"
-        code={`type Theme = 'light' | 'dark';
-type Size = 'sm' | 'md' | 'lg';
-
-// Creates: 'light-sm' | 'light-md' | 'light-lg' | 'dark-sm' | ...
-type VariantKey = \`\${Theme}-\${Size}\`;
-
-const variants: Record<VariantKey, string> = {
-  'light-sm': 'bg-white text-xs',
-  'light-md': 'bg-white text-sm',
-  'light-lg': 'bg-white text-base',
-  'dark-sm': 'bg-black text-xs',
-  'dark-md': 'bg-black text-sm',
-  'dark-lg': 'bg-black text-base',
-};`}
-      />
-
-      <Divider />
-
-      <TextBlock variant="list">
-        <ListItem>Use discriminated unions for state management</ListItem>
-        <ListItem>Leverage generic constraints to make APIs type-safe</ListItem>
-        <ListItem>Template literals create powerful type combinations</ListItem>
-        <ListItem>Always prefer types over interfaces for unions</ListItem>
-      </TextBlock>
-
-      <TextBlock variant="quote">
-        "Strong typing isn't about restricting what you can do - it's about expressing intent clearly."
-      </TextBlock>
-    </>
-  ),
   "snt-concurrency-architecture": () => (
     <>
       <TextBlock variant="paragraph">
@@ -324,10 +208,6 @@ const variants: Record<VariantKey, string> = {
 
       <TextBlock variant="paragraph">
         During load testing, we discovered a critical "check-then-act" race condition. Standard validation logic checks if a seat is available and <em>then</em> books it. However, in the milliseconds between the <code>READ</code> and the <code>WRITE</code>, another request could slip in.
-      </TextBlock>
-
-      <TextBlock variant="paragraph">
-        In a high-concurrency environment, this standard approach fails:
       </TextBlock>
 
       <CodeBlock
@@ -348,10 +228,6 @@ async function bookSeat(vehicleId, seatNumber, userId) {
   return await db.createBooking(vehicleId, seatNumber, userId);
 }`}
       />
-
-      <TextBlock variant="paragraph">
-        This is a classic concurrency anomaly. With standard PostgreSQL <code>READ COMMITTED</code> isolation, both transactions see the seat as "free" before either commits.
-      </TextBlock>
 
       <TextBlock variant="heading">The Solution: Pessimistic Locking</TextBlock>
 
@@ -398,50 +274,6 @@ async function bookSeatSecurely(vehicleId, seatNumber, userId) {
         By utilizing database-level row locking, we guaranteed <strong>ACID compliance</strong> for every booking. Zero double bookings, regardless of traffic spikes.
       </Callout>
 
-      <TextBlock variant="heading">Optimizing the User Experience</TextBlock>
-
-      <TextBlock variant="paragraph">
-        Solving the backend problem created a frontend challenge: latency. Locking rows introduces wait times. To mask this, I implemented an <strong>Optimistic UI</strong> pattern handling specifically for the <code>409 Conflict</code> status code.
-      </TextBlock>
-
-      <ImageBlock
-        src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=1000&auto=format&fit=crop"
-        alt="Server Architecture Diagram"
-        caption="Balancing strong consistency on the backend with eventual consistency on the frontend."
-        size="full"
-      />
-
-      <TextBlock variant="paragraph">
-        If a lock contention occurs or a booking fails due to a race condition (which is now caught safely), the UI needs to handle it gracefully without crashing or confusing the user.
-      </TextBlock>
-
-      <CodeBlock
-        filename="useBooking.ts"
-        language="typescript"
-        code={`// Handling the edge case gracefully in the UI
-const handleBooking = async (seatId: string) => {
-  // 1. Optimistic Update: Visually reserve immediately
-  setSeatStatus(seatId, 'RESERVED');
-
-  try {
-    await api.bookSeat(seatId);
-    toast.success('Booking Confirmed!');
-  } catch (error) {
-    // 2. Rollback on failure
-    setSeatStatus(seatId, 'AVAILABLE');
-    
-    // 3. Specific handling for concurrency conflicts
-    if (error.status === 409) {
-      toast.error('Someone just snatched this seat! Please choose another.');
-      // Automatically refresh inventory to show latest state
-      refreshInventory(); 
-    } else {
-      toast.error('Booking failed. Please try again.');
-    }
-  }
-};`}
-      />
-
       <Divider />
 
       <TextBlock variant="heading">Key Takeaways</TextBlock>
@@ -451,9 +283,173 @@ const handleBooking = async (seatId: string) => {
         <ListItem><strong>Know Your Database:</strong> Understanding transaction isolation levels (Read Committed vs. Serializable) is a senior-level skill.</ListItem>
         <ListItem><strong>Fail Gracefully:</strong> A race condition isn't a system crash; it's a business logic state that needs a specific UI response.</ListItem>
       </TextBlock>
+    </>
+  ),
+
+  "stale-while-revalidate-engine": () => (
+    <>
+      <TextBlock variant="paragraph">
+        Loading spinners are a failure of imagination. I said it. When you're building for users in remote areas with spotty connections, showing a blank screen while you fetch data isn't just "bad UX"—it's broken product.
+      </TextBlock>
+
+      <StatsGrid
+        columns={3}
+        stats={[
+          { value: "0ms", label: "Perceived Latency", description: "Immediate paint on route change" },
+          { value: "100%", label: "Offline Support", description: "Full read access without network" },
+          { value: "Type-Safe", label: "Architecture", description: "Generic implementation" },
+        ]}
+      />
+
+      <TextBlock variant="heading">The "Instant Feel" Architecture</TextBlock>
+
+      <TextBlock variant="paragraph">
+        React's default data fetching often leads to waterfalls. I wanted something that felt "local-first" without the complexity of a massive sync engine. I built a custom <code>CacheManager</code> that strictly implements the <strong>Stale-While-Revalidate</strong> pattern.
+      </TextBlock>
+
+      <Accordion
+        items={[
+          {
+            title: "Strategy: Stale-While-Revalidate",
+            content: "We immediately return the 'stale' data from localStorage so the UI paints instantly. Then, we silently trigger a network request in the background. When that request finishes, we update the UI. The user sees content in 0ms, and sees the *fresh* content a second later."
+          },
+          {
+            title: "Strategy: Cache Invalidation",
+            content: "We set a 5-minute 'stale time'. If the user visits the page within 5 minutes, we don't even hit the network. Perfect for navigating back and forth between lists and details."
+          }
+        ]}
+      />
+
+      <TextBlock variant="subheading">The Implementation</TextBlock>
+
+      <TextBlock variant="paragraph">
+        Here is the heart of the engine. Notice how `getOrFetch` abstracts the entire complexity of TTL checking and background revalidation.
+      </TextBlock>
+
+      <CodeBlock
+        filename="utils/cache-manager.ts"
+        language="typescript"
+        code={`// The heart of the engine
+static async getOrFetch<T>(
+  key: string, 
+  fetchFn: () => Promise<T>, 
+  ttl: number = this.DEFAULT_TTL,
+  staleWhileRevalidate: boolean = true
+): Promise<T> {
+  // 1. Try to get data from local storage
+  const cached = await this.get<T>(key);
+  
+  if (cached) {
+    // 2. HIT: Return cached data IMMEDIATELY (0ms latency)
+    
+    // 3. Background Revalidation
+    if (staleWhileRevalidate && await this.isStale(key)) {
+      // Non-blocking fetch to update cache for next time
+      fetchFn().then(data => this.set(key, data, ttl)).catch(() => {});
+    }
+    return cached;
+  }
+
+  // 4. MISS: Must fetch (fallback behavior)
+  const data = await fetchFn();
+  await this.set(key, data, ttl);
+  return data;
+}`}
+      />
+
+      <Callout type="success">
+        <strong>The "Aha!" Moment:</strong> Because this runs on `localStorage`, it accidentally gave us full Offline Support. If the network fails, the `catch` block triggers, and the user just keeps browsing the cached version. No "You are offline" dinosaur game.
+      </Callout>
+
+      <Divider />
 
       <TextBlock variant="quote">
-        "True optimization isn't just making things faster; it's making them robust enough to handle the chaos of the real world."
+        "Speed isn't just about how fast bytes travel; it's about how fast the user *feels* like they are moving."
+      </TextBlock>
+    </>
+  ),
+
+  "serverless-security-hardening": () => (
+    <>
+      <TextBlock variant="paragraph">
+        There's a naive belief that if you hide a button on the frontend, users can't click it. I learned the hard way that bots don't use buttons—they use cURL.
+      </TextBlock>
+
+      <TextBlock variant="heading">The Attack Vector</TextBlock>
+
+      <TwoColumn
+        variant="left-heavy"
+        left={
+          <TextBlock variant="paragraph">
+            We had a public endpoint for vehicle bookings. Initially, I just validated the form in React.
+            <br /><br />
+            <strong>The result?</strong> Spambots bypassed the frontend entirely, hitting the API directly and filling our database with fake reservations. We needed a gatekeeper that lived *outside* the browser.
+          </TextBlock>
+        }
+        right={
+          <Alert variant="warning" title="Security Rule #1">
+            Never trust the client. Anything running in the browser can be manipulated, mocked, or bypassed.
+          </Alert>
+        }
+      />
+
+      <TextBlock variant="heading">Zero-Trust at the Edge</TextBlock>
+
+      <TextBlock variant="paragraph">
+        I moved the booking logic to a <strong>Supabase Edge Function</strong>. This allowed me to perform a cryptographic handshake with Cloudflare *before* the database write ever happens.
+      </TextBlock>
+
+      <TextBlock variant="subheading">The Gatekeeper Pattern</TextBlock>
+
+      <CodeBlock
+        filename="supabase/functions/submit-vehicle-booking/index.ts"
+        language="typescript"
+        code={`// 1. Intercept the request at the Edge
+serve(async (req) => {
+  
+  // 2. Extract the Turnstile token from the client
+  const { turnstileToken } = await req.json();
+
+  // 3. Verify with Cloudflare directly (Server-to-Server)
+  const turnstileResponse = await fetch(
+    'https://challenges.cloudflare.com/turnstile/v0/siteverify', 
+    {
+      method: 'POST',
+      body: new URLSearchParams({
+        secret: Deno.env.get('TURNSTILE_SECRET_KEY'),
+        response: turnstileToken,
+      }),
+    }
+  );
+
+  const result = await turnstileResponse.json();
+
+  // 4. The Kill Switch
+  if (!result.success) {
+    return new Response(
+      JSON.stringify({ error: 'Bot verification failed' }),
+      { status: 403 }
+    );
+  }
+
+  // Only NOW do we touch the database...
+});`}
+      />
+
+      <Callout type="info">
+        By handling CORS manually with `OPTIONS` preflight checks, we also ensured that our API rejects any request that doesn't originate from our specific domain.
+      </Callout>
+
+      <Divider />
+
+      <TextBlock variant="heading">Why It Matters</TextBlock>
+
+      <TextBlock variant="paragraph">
+        This isn't just about clean data. It's about cost. Every database write costs money. By stopping the attack at the Edge, we save DB resources and ensure that every entry in our system represents a real, paying human.
+      </TextBlock>
+
+      <TextBlock variant="quote">
+        "Security features aren't 'nice to haves'. In a public booking system, they are the difference between a business and a bot farm."
       </TextBlock>
     </>
   ),
